@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template3">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+          crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark ">
+    <div class="container-fluid">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="navbar-link active" th:href="@{/user/index}">
+                    <img  th:src="@{/images/logo.png}"/>
+                </a>
+
+            </li>
+        </ul>
+
+        <ul class="navbar-nav .ml-auto">
+            <li class="nav-item dropdown" >
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    Patients
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" th:href="@{/user/index}">Liste</a></li>
+                    <li><a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/formPatients}">Nouveau</a></li>
+                    <li><a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/user/statistics}">Voir les statistiques</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown" >
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    Medecins
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" th:href="@{/user/medecins}">Liste</a></li>
+                    <li><a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/formMedecin}">Nouveau</a></li>
+                    <li><a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/specialite}">Voir les statistiques</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    Rendez-vous
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" th:href="@{/user/rdv}">Liste</a></li>
+                    <li><a class="dropdown-item"  sec:authorize="hasRole('ADMIN')" th:href="@{/admin/formRDV}">Nouveau</a></li>
+                    <li><a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/statistics}">Voir les statistiques</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown" >
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    Dossier Medical
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" th:href="@{/user/dossierMedical}">Liste</a></li>
+                    <li><a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/formDossierMedical}">Nouveau</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown" >
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    Consultations
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" th:href="@{/user/consultations}">Liste</a></li>
+                    <li><a class="dropdown-item"  sec:authorize="hasRole('ADMIN')" th:href="@{/admin/formConsultation}">Nouveau</a></li>
+
+                </ul>
+            </li>
+            <li style="padding: 0.5rem 1rem; color: #ff0000;">
+                <!--						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"-->
+                <!--							aria-haspopup="true" aria-expanded="false">-->
+                <!-- 							<i class="fas fa-user-circle"></i> <span th:text="${#authentication.name}"></span>-->
+                <a th:href="@{/login?logout}">Déconnexion</a>
+
+                <!--						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">-->
+                <!--							<a th:href="@{/admin/users}" class="dropdown-item"  sec:authorize="hasRole('ADMIN')">Utilisateurs</a>-->
+                <!--							<a th:href="@{/login?logout}" class="dropdown-item">Se déconnecter</a>-->
+                <!--						</div>-->
+            </li>
+        </ul>
+
+    </div>
+</nav>
+
+<div layout:fragment="content1">
+    <div class="col-md-6 offset-3">
+        <form method="get" th:action="@{/admin/ShowMedecin(page=${page},keyword=${keyword})}">
+            <div class="form-row">
+
+                <div class="col-sm-9">
+                    <label class="control-label">ID : </label>
+                    <label th:text="${medecin.id}"></label>
+                    <input id="id" class="form-control" type="hidden" name="id" th:value="${medecin.id}" disabled>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="control-label">Nom : </label>
+                    <input class="form-control" type="text" name="nom" th:required="required" th:value="${medecin.nom}" disabled>
+                    <span class="text-danger" th:errors="${medecin.nom}"></span>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="control-label">Prenom : </label>
+                    <input class="form-control" type="text" name="prenom" th:required="required" th:value="${medecin.prenom}" disabled>
+                    <span class="text-danger" th:errors="${medecin.prenom}"></span>
+
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label class="control-label">Email : </label>
+                    <input class="form-control" type="text" name="email" th:required="required" th:value="${medecin.email}" disabled>
+                    <span class="text-danger" th:errors="${medecin.email}"></span>
+
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label class="control-label">Nombre d'heures de travail : </label>
+                    <input class="form-control" type="text" name="nbHoraires" th:required="required" th:value="${medecin.nbHoraires}" disabled>
+                    <span class="text-danger" th:errors="${medecin.nbHoraires}"></span>
+
+                </div>
+
+                <div>
+                    <label>Specialité</label>
+                    <select th:field="*{medecin.specialite}" disabled>
+                        <option value="">Choisir</option>
+                        <option value="Generaliste">Generaliste</option>
+                        <option value="anesthesiologie">anesthesiologie</option>
+                        <option value="cardiologie">cardiologie</option>
+                        <option value="dermatologie">dermatologie</option>
+                        <option value="neurologie">neurologie</option>
+                    </select>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+</div>
+
+
+</body>
+</html>

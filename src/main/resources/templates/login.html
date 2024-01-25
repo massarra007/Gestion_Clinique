@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+		integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
+		type="text/css" />
+	<title>Gestion Clinique</title>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row mt-5">
+			<div class="col-4"></div>
+			<div class="col-4  border border-primary">
+				<form th:action="@{/login}" method="post">
+				
+				
+					<h1 class="h3 mb-3 font-weight-normal text-center">Authentification</h1>
+					<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.error}">
+						<small class="font-weight-light">Votre identifiant ou mot de passe est incorrect.</small>
+					</div>
+					<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.success}">
+						<small class="font-weight-light">Vous êtes déconnectés !</small></div>
+						
+						
+					<div class="form-group">
+						<label>Login:</label><input name="username" class="form-control" placeholder="Login"
+							type="text">
+					</div>
+					<div class="form-group"><label>Mot de passe:</label><input class="form-control" placeholder="******"
+							type="password" name="password"></div>
+							
+					<div class="form-group"><button type="submit" class="btn btn-primary btn-block"> Se connecter
+						</button>
+					</div>
+				</form>
+				<div class="mt-5 mb-3 text-center">
+				</div>
+			</div>
+			<div class="col-4"></div>
+		</div>
+	</div>
+
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+		integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

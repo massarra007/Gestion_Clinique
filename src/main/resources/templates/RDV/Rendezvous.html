@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des RDVs</title>
+    <link 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+             type="text/css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark ">
+    <div class="container-fluid">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="navbar-link active" th:href="@{/user/index}">
+                    <img  th:src="@{/images/logo.png}"/>
+                </a>
+
+            </li>
+        </ul>
+
+        <ul class="navbar-nav .ml-auto">
+            <li class="nav-item dropdown" >
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    Patients
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" th:href="@{/user/index}">Liste</a></li>
+                    <li><a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/formPatients}">Nouveau</a></li>
+                    <li><a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/user/statistics}">Voir les statistiques</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown" >
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    Medecins
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" th:href="@{/user/medecins}">Liste</a></li>
+                    <li><a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/formMedecin}">Nouveau</a></li>
+                    <li><a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/specialite}">Voir les statistiques</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    Rendez-vous
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" th:href="@{/user/rdv}">Liste</a></li>
+                    <li><a class="dropdown-item"  sec:authorize="hasRole('ADMIN')" th:href="@{/admin/formRDV}">Nouveau</a></li>
+                    <li><a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/statistics}">Voir les statistiques</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown" >
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    Dossier Medical
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" th:href="@{/user/dossierMedical}">Liste</a></li>
+                    <li><a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/formDossierMedical}">Nouveau</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown" >
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    Consultations
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" th:href="@{/user/consultations}">Liste</a></li>
+                    <li><a class="dropdown-item"  sec:authorize="hasRole('ADMIN')" th:href="@{/admin/formConsultation}">Nouveau</a></li>
+
+                </ul>
+            </li>
+            <li style="padding: 0.5rem 1rem; color: #ff0000;">
+                <!--						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"-->
+                <!--							aria-haspopup="true" aria-expanded="false">-->
+                <!-- 							<i class="fas fa-user-circle"></i> <span th:text="${#authentication.name}"></span>-->
+                <a th:href="@{/login?logout}">Déconnexion</a>
+
+                <!--						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">-->
+                <!--							<a th:href="@{/admin/users}" class="dropdown-item"  sec:authorize="hasRole('ADMIN')">Utilisateurs</a>-->
+                <!--							<a th:href="@{/login?logout}" class="dropdown-item">Se déconnecter</a>-->
+                <!--						</div>-->
+            </li>
+        </ul>
+
+    </div>
+</nav>
+
+<div>
+
+    <div class=" container mt-2 " >
+        <div class="card">
+            <div class="card-header">LISTE DES RENDEZ VOUS</div>
+            <div class="card-body">
+                <div>
+
+                    <form class="form-inline my-2 my-lg-0" method="get" th:action="@{/user/rdv}">
+                        <input type="date" name="keyword" th:value="${#dates.format(keyword, 'yyyy-MM-dd')}" class="form-control" placeholder="chercher un RDV">
+                        <button class="btn btn-outline-info" type="submit">Rechercher</button>
+                    </form>
+
+                </div>
+
+                <table class="table table-hover" >
+                    <thead>
+                    <tr class="table-warning">
+                        <th scope="col">Id</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Patient</th>
+                        <th scope="col">Medecin</th>
+                        <th sec:authorize="hasRole('ADMIN')">Supprimer</th>
+                        <th sec:authorize="hasRole('ADMIN')">Modifier</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each= "rdv:${listRDV}">
+                        <td th:text="${rdv.id}"></td>
+                        <td th:text="${rdv.date}"></td>
+                        <td th:text="${rdv.statusRDV}"></td>
+                        <td th:text="${rdv.patient.nom}"></td>
+                        <td th:text="${rdv.medecin.nom}"></td>
+                        <td sec:authorize="hasRole('ADMIN')">
+                            <a onclick="return confirm('Etes vous sûr ? ')" class="btn btn-danger" th:href="@{/admin/deleteRDV(id=${rdv.id} ,page=${currentPage})}">
+                                Supprimer
+                            </a>
+                        </td>
+                        <td sec:authorize="hasRole('ADMIN')">
+                            <a  class="btn btn-success"  th:href="@{/admin/EditRDV(id=${rdv.id},page=${currentPage})}">
+                                Modifier
+                            </a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <ul class=" nav nav-pills">
+                    <li th:each="page, status:${pages}">
+                        <a th:class="${status.index==currentPage}? 'btn btn-primary ms-1' : 'btn btn-outline-primary ms-1' "
+                           th:href="@{/user/rdv(page=${status.index})}"
+                           th:text="${status.index}"></a>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
